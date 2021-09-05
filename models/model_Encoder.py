@@ -48,7 +48,7 @@ class Encoder(nn.Module):
 
         self.conv14 = nn.Conv2d(256, 512, 3, padding=1, stride=2)
         self.conv15 = nn.Conv2d(512, 512, 4)
-        self.fc1 = nn.Linear(512, 14)
+        self.fc1 = nn.Linear(512, 7)
 
 
     def weight_init(self):
