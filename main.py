@@ -26,15 +26,13 @@ import torch.nn.functional as F
 def main():
     torch.cuda.empty_cache()
     file = open("../data/process_state_VAE_KL.txt", "a")
-    # file = open("/home/moshelaufer/Documents/dataset/results25/process_state_VAE_KL.txt", "a")
     device = torch.device('cuda:2')
     model = VAE().to(device)
-    path2model = "/home/moshelaufer/Documents/dataset/results25/modelVAE_KL2.pt"
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
     model.train()
 
     mse_criterion = nn.MSELoss().to(device)
-    criterion_out = nn.KLDivLoss(reduction='batchmean').to(device)
+    # criterion_out = nn.KLDivLoss(reduction='batchmean').to(device)
     n_epochs = 100
     loss_arr_mid = []
     loss_arr_out = []
@@ -45,10 +43,9 @@ def main():
 
     for epoch in range(n_epochs):
         dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly/",
-                          "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly.csv",
-                          inference=1, train=1)
+                          "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly.csv")
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=1,
-                                                 pin_memory=True, drop_last=True)
+                                                  pin_memory=True, drop_last=True)
         print(len(data_loader.dataset))
 
         num_batch = len(data_loader.dataset) // batch_size
@@ -57,10 +54,9 @@ def main():
         start_time = time.time()
 
         c1 = 0
-        c2 = 0
-        for btch_num, data in enumerate(data_loader):
-            if btch_num % 200 == 0:
-                print("sum samples = {} ".format(btch_num * batch_size))
+        for batch_num, data in enumerate(data_loader):
+            if batch_num % 200 == 0:
+                print("sum samples = {} ".format(batch_num * batch_size))
             spec = data[0]
             label = data[1]
             spec = spec.to(device)
@@ -76,14 +72,13 @@ def main():
             model_optimizer.step()
             loss_mid_tot += loss.item()
             loss_out_tot += loss.item()
-            
-            if btch_num % 100 == 0 and btch_num > 0:
-                bn = btch_num / 2
+
+            if batch_num % 100 == 0 and batch_num > 0:
                 print(
                     "[Epoch %d/%d] [Batch %d/%d] [Mid loss: %f] [Out loss: %f] VAE"
-                    % (epoch, n_epochs, btch_num, num_batch, loss_mid_tot / c1, loss_out_tot / c1)
+                    % (epoch, n_epochs, batch_num, num_batch, loss_mid_tot / c1, loss_out_tot / c1)
                 )
-                
+
         loss_mid_tot = loss_mid_tot / c1
         loss_out_tot = loss_out_tot / c1
         loss_arr_mid.append(loss_mid_tot)
@@ -119,7 +114,7 @@ def main():
     print("Training is over")
     file.write("Training is over\n")
     torch.no_grad()
-    print("Weight file had saccsufully saved!!\n")
+    print("Weight file had successfully saved!!\n")
     file.close()
 
 
