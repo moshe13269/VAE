@@ -2,11 +2,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import numpy
-from model_VAE import VAE
+from models.model_VAE import VAE
 from dataloader import Dataset
 import time
-import torch.nn.functional as F
 
 
 def main():
@@ -81,7 +79,7 @@ def main():
         file.write("Loss out= {}, epoch = {} wl".format(loss_out_tot, epoch))
         print("Loss mid train = {}, epoch = {}, batch_size = {} wl".format(loss_mid_tot, epoch, batch_size))
         print("Loss out train = {}, epoch = {}, batch_size = {} wl".format(loss_out_tot, epoch, batch_size))
-        outfile_epoch = "data/loss_arr_mid2_KL2.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_mid2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
         outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_out2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_out))
