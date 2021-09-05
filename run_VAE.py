@@ -7,7 +7,7 @@ from dataloader import Dataset
 import time
 
 
-def run_VAE():
+def main():
     torch.cuda.empty_cache()
     file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_VAE_KL.txt", "a")
     device = torch.device('cuda:2')
@@ -100,3 +100,6 @@ def run_VAE():
     torch.no_grad()
     print("Weight file had successfully saved!!\n")
     file.close()
+
+if __name__ == "__main__":
+    main()

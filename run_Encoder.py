@@ -7,7 +7,7 @@ from dataloader import Dataset
 import time
 
 
-def run_encoder():
+def main():
     torch.cuda.empty_cache()
     file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_encoder.txt", "a")
     device = torch.device('cuda:3')
@@ -90,3 +90,6 @@ def run_encoder():
     torch.no_grad()
     print("Weight file had successfully saved!!\n")
     file.close()
+
+if __name__ == "__main__":
+    main()
