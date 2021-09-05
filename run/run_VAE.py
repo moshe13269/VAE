@@ -3,13 +3,13 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from models.model_VAE import VAE
-from dataloader import Dataset
+from utils.dataloader import Dataset
 import time
 
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_VAE_KL.txt", "a")
+    file = open("/data/process_state_VAE_KL.txt", "a")
     device = torch.device('cuda:2')
     model = VAE().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
@@ -85,12 +85,12 @@ def main():
         np.save(outfile_epoch, np.asarray(loss_arr_out))
 
         if epoch <= 2:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/modelVAE_KL2.pt"
+            path = "/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/modelVAE_KL2.pt"
+            path = "/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")

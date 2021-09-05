@@ -3,13 +3,13 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from models.model_Encoder import Encoder
-from dataloader import Dataset
+from utils.dataloader import Dataset
 import time
 
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_encoder.txt", "a")
+    file = open("/data/process_state_encoder.txt", "a")
     device = torch.device('cuda:3')
     model = Encoder().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
