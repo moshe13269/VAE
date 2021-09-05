@@ -9,7 +9,3 @@ def denormalized_vector(vector):
     vector[1] = v1[np.argmin(np.abs(v1 - vector[1]))]
     vector[2] = v2[np.argmin(np.abs(v2 - vector[2]))]
     return vector
-
-# aa = np.random.rand(7)
-# print(aa)
-# print(denormalized_vector(aa))

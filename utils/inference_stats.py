@@ -7,10 +7,9 @@ import numpy as np
 import os
 from utils.util import denormalized_vector
 import matplotlib.pyplot as plt
-import torch.nn.functional as F
 
 
-class Results():
+class Results:
 
     def __init__(self, path2save, path2encoder, path2vae, path2dataset, path2csv, VAE=1):
         self.path2save = path2save
