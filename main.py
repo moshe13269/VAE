@@ -1,17 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 18 10:28:14 2021
-
-@author: moshelaufer
-"""
-
 import numpy as np
 import torch
 import torch.nn as nn
@@ -25,7 +11,7 @@ import torch.nn.functional as F
 
 def main():
     torch.cuda.empty_cache()
-    file = open("../data/process_state_VAE_KL.txt", "a")
+    file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_VAE_KL.txt", "a")
     device = torch.device('cuda:2')
     model = VAE().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
@@ -57,8 +43,8 @@ def main():
         for batch_num, data in enumerate(data_loader):
             if batch_num % 200 == 0:
                 print("sum samples = {} ".format(batch_num * batch_size))
-            spec = data[0]
-            label = data[1]
+            spec = data[0].float()
+            label = data[1].float()
             spec = spec.to(device)
             label = label.to(device)
             re_spec, vector = model(spec)
@@ -70,8 +56,8 @@ def main():
             model_optimizer.zero_grad()
             loss.backward()
             model_optimizer.step()
-            loss_mid_tot += loss.item()
-            loss_out_tot += loss.item()
+            loss_mid_tot += loss_m.item()
+            loss_out_tot += loss_o.item()
 
             if batch_num % 100 == 0 and batch_num > 0:
                 print(
@@ -97,16 +83,16 @@ def main():
         print("Loss out train = {}, epoch = {}, batch_size = {} wl".format(loss_out_tot, epoch, batch_size))
         outfile_epoch = "data/loss_arr_mid2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
-        outfile_epoch = "data/loss_arr_out2_KL2.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_out2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_out))
 
         if epoch <= 2:
-            path = "data/modelVAE_KL2.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "data/modelVAE_KL2.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")

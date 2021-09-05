@@ -45,7 +45,7 @@ class Dataset(Dataset):
         except UnboundLocalError:
             print(self.path_list[index])
         f, t, Zxx = signal.stft(x, fs, nperseg=128, nfft=511, window='hamming')
-        Zxx = np.log(np.abs(Zxx)+10**-10)
+        Zxx = np.log(np.abs(Zxx)+10**-6)
         Zxx = torch.tensor(Zxx[:, :256])
         # Zxx = ((Zxx - Zxx.mean()) / Zxx.std())
         z_min = Zxx.min()
