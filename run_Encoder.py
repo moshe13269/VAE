@@ -44,7 +44,7 @@ def main():
             label = data[1].float()
             spec = spec.to(device)
             label = label.to(device)
-            re_spec, vector = model(spec)
+            vector = model(spec)
 
             c1 += 1
             loss = mse_criterion(vector, label)
