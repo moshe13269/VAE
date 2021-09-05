@@ -7,7 +7,7 @@ from dataloader import Dataset
 import time
 
 
-def main():
+def run_encoder():
     torch.cuda.empty_cache()
     file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_encoder.txt", "a")
     device = torch.device('cuda:3')
@@ -55,7 +55,7 @@ def main():
 
             if batch_num % 100 == 0 and batch_num > 0:
                 print(
-                    "[Epoch %d/%d] [Batch %d/%d] [Mid loss: %f] [Out loss: %f] VAE"
+                    "[Epoch %d/%d] [Batch %d/%d] [Mid loss: %f] Encoder"
                     % (epoch, n_epochs, batch_num, num_batch, loss_mid_tot / c1)
                 )
 
@@ -65,7 +65,7 @@ def main():
         file.write("--- %s seconds ---" % (time.time() - start_time))
 
         file.write('\n')
-        file.write('loss_mid_tot = %f , loss_out_tot = %f  VAE\n' % (loss_mid_tot, loss_out_tot))
+        file.write('loss_mid_tot = %f , loss_out_tot = %f  Encoder\n' % (loss_mid_tot, loss_out_tot))
 
         print('\n')
 
@@ -90,7 +90,3 @@ def main():
     torch.no_grad()
     print("Weight file had successfully saved!!\n")
     file.close()
-
-
-if __name__ == "__main__":
-    main()
