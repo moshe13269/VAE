@@ -71,16 +71,16 @@ def main():
 
         file.write("Loss mid= {}, epoch = {} wl".format(loss_mid_tot, epoch))
         print("Loss mid train = {}, epoch = {}, batch_size = {} wl".format(loss_mid_tot, epoch, batch_size))
-        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_encoder.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/loss_arr_encoder.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
 
         if epoch <= 2:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
