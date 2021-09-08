@@ -1,11 +1,11 @@
 import pandas as pd
 import torch
-from models.model_VAE import VAE
-from models.model_Encoder import Encoder
-from utils.dataloader import Dataset
+from VAE.models.model_VAE import VAE
+from VAE.models.model_Encoder import Encoder
+from VAE.utils.dataloader import Dataset
 import numpy as np
 import os
-from utils.util import denormalized_vector
+from VAE.utils.util import denormalized_vector
 import matplotlib.pyplot as plt
 
 
