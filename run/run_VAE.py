@@ -79,18 +79,18 @@ def main():
         file.write("Loss out= {}, epoch = {} wl".format(loss_out_tot, epoch))
         print("Loss mid train = {}, epoch = {}, batch_size = {} wl".format(loss_mid_tot, epoch, batch_size))
         print("Loss out train = {}, epoch = {}, batch_size = {} wl".format(loss_out_tot, epoch, batch_size))
-        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_mid2_KL2.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/loss_arr_mid2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
-        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_out2_KL2.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/loss_arr_out2_KL2.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_out))
 
         if epoch <= 2:
-            path = "/data/modelVAE_KL2.pt"
+            path = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "/data/modelVAE_KL2.pt"
+            path = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/modelVAE_KL2.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
@@ -100,6 +100,7 @@ def main():
     torch.no_grad()
     print("Weight file had successfully saved!!\n")
     file.close()
+
 
 if __name__ == "__main__":
     main()

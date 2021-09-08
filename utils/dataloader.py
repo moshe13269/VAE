@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 16 01:10:24 2021
-
-@author: moshelaufer
-"""
-
 from torch.utils.data import Dataset
 import torch
 from os import listdir
@@ -18,6 +10,7 @@ import pandas as pd
 import torchaudio
 import torchaudio.functional as F
 import torchaudio.transforms as T
+
 
 def load_obj(name):
     with open(name, 'rb') as f:
@@ -45,7 +38,7 @@ class Dataset(Dataset):
         except UnboundLocalError:
             print(self.path_list[index])
         f, t, Zxx = signal.stft(x, fs, nperseg=128, nfft=511, window='hamming')
-        Zxx = np.log(np.abs(Zxx)+10**-6)
+        Zxx = np.log(np.abs(Zxx) + 10 ** -6)
         Zxx = torch.tensor(Zxx[:, :256])
         # Zxx = ((Zxx - Zxx.mean()) / Zxx.std())
         z_min = Zxx.min()
@@ -56,7 +49,7 @@ class Dataset(Dataset):
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
         label = list(self.csv_df.loc[index])[1:]
-        label = np.asarray(label)/np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+        label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
         # if self.train:
         #     label = convert_label2classes(label)
         #     # label = np.asarray(label)/np.asarray([0.75,0.75,0.43,1,0.64,1,1])
