@@ -9,8 +9,8 @@ import time
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/data/process_state_encoder.txt", "a")
-    device = torch.device('cuda:3')
+    file = open("/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/process_state_encoder.txt", "a")
+    device = torch.device('cuda:1')
     model = Encoder().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
     model.train()

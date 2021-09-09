@@ -7,9 +7,6 @@ from scipy import signal
 from scipy.io import wavfile
 import pickle
 import pandas as pd
-import torchaudio
-import torchaudio.functional as F
-import torchaudio.transforms as T
 
 
 def load_obj(name):
