@@ -1,17 +1,17 @@
 import pandas as pd
 import torch
-from VAE.models.model_VAE import VAE
-from VAE.models.model_Encoder import Encoder
-from VAE.utils.dataloader import Dataset
+from autoencoder.VAE.models.model_VAE import VAE
+from autoencoder.VAE.models.model_Encoder import Encoder
+from autoencoder.VAE.utils.dataloader import Dataset
 import numpy as np
 import os
-from VAE.utils.util import denormalized_vector
+from autoencoder.VAE.utils.util import denormalized_vector
 import matplotlib.pyplot as plt
 
 
 class Results:
 
-    def __init__(self, path2save, path2encoder, path2vae, path2dataset, path2csv, VAE=1):
+    def __init__(self, path2save, path2encoder, path2vae, path2dataset, path2csv, vae=1):
         self.path2save = path2save
         self.device = torch.device('cuda:3')
         self.path2Encoder = path2encoder
@@ -20,7 +20,7 @@ class Results:
         self.VAE = VAE().float().to(self.device)
         self.path2csv = path2csv
         self.path2dataset = path2dataset
-        self.VAE = VAE
+        self.VAE = vae
 
     def load_weight_model(self):
         self.Encoder.load_state_dict(torch.load(self.path2Encoder)['model_state_dict']).eval()
@@ -30,7 +30,7 @@ class Results:
         columns = ['24.osc2waveform', '26.lfo1waveform', '32.lfo1destination',
                    '30.lfo1amount', '28.lfo1rate', '3.cufoff', '4.resonance']
         df = pd.DataFrame(np_array, columns=columns)
-        if self.VAE:
+        if self.vae:
             df.to_csv(os.path.join(self.path2save,'vae.csv'))
         else:
             df.to_csv(os.path.join(self.path2save, 'encoder.csv'))
@@ -43,7 +43,7 @@ class Results:
 
         with torch.no_grad():
             for batch_num, data in enumerate(data_loader):
-                if batch_num % 20 == 0 and batch_num > 0:
+                if batch_num % 1000 == 0 and batch_num > 0:
                     print('sample num: {}'.format(batch_num))
                     break
                 spec = data[0].float().to(self.device)

@@ -11,6 +11,7 @@ def main():
     t1 = np.arange(np.load(file_list[1]).shape[0])
     t2 = np.arange(np.load(file_list[2]).shape[0])
     plt.plot(t0, np.load(file_list[0]), 'r')
+    print(file_list)
     plt.plot(t1, np.load(file_list[1]), 'b')
     plt.plot(t2, np.load(file_list[2]), 'g')
     plt.show()

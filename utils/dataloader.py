@@ -35,13 +35,14 @@ class Dataset(Dataset):
         except UnboundLocalError:
             print(self.path_list[index])
         f, t, Zxx = signal.stft(x, fs, nperseg=128, nfft=511, window='hamming')
-        Zxx = np.log(np.abs(Zxx) + 10 ** -6)
+        # f, t, Zxx = signal.stft(x, fs, nperseg=64, nfft=1023, window='hamming')
+        Zxx = np.log(np.abs(Zxx) + 10 ** -10)
         Zxx = torch.tensor(Zxx[:, :256])
         # Zxx = ((Zxx - Zxx.mean()) / Zxx.std())
-        z_min = Zxx.min()
-        z_max = Zxx.max()
-        diff = z_max - z_min
-        Zxx = (Zxx - z_min) / diff
+        # z_min = Zxx.min()
+        # z_max = Zxx.max()
+        # diff = z_max - z_min
+        # Zxx = (Zxx - z_min) / diff
         Zxx = Zxx.unsqueeze(0)
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
@@ -55,27 +56,18 @@ class Dataset(Dataset):
         #     label = torch.cat((label1, label2), dim=0)
         return Zxx, label
 
-# if __name__ == '__main__':
-#     from torch.utils.data import DataLoader
-#     dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR/",
-#                           "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR.csv",
-#                           inference=0)
-#     dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
-#     c = 0
-#     cur_max = 0
-#     arr_max = []
-#     for i in range(len(dataloader)):
-#
-#         a=next(iter(dataloader))
-#         arr_max.append(a[0].max().item())
-#         cur_max = max(cur_max,a[0].max().item())
-#
-#         c+=1
-#         if c%20000==0:
-#             print(c)
-#     print(sum(arr_max)/len(arr_max))
-#     print(c)
-#     print(len(dataloader))
-#     print(len(a))
-#
-# print(next(iter(dataloader)).size())
+
+if __name__ == '__main__':
+    from torch.utils.data import DataLoader
+    dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR/",
+                          "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR.csv")
+    data_loader = DataLoader(dataset, batch_size=1, shuffle=True)
+    c = 0
+    cur_max = 0
+    arr_max = []
+    for i in range(len(data_loader)):
+
+        a=next(iter(data_loader))
+        arr_max.append(a[0].max().item())
+        cur_max = max(cur_max,a[0].max().item())
+
