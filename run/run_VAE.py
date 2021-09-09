@@ -2,14 +2,14 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from models.model_VAE import VAE
-from utils.dataloader import Dataset
+from VAE.models.model_VAE import VAE
+from VAE.utils.dataloader import Dataset
 import time
 
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/data/process_state_VAE_KL.txt", "a")
+    file = open("/home/moshelaufer/PycharmProjects/autoencoder/VAE/data/process_state_VAE_KL.txt", "a")
     device = torch.device('cuda:2')
     model = VAE().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
