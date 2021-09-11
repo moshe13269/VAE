@@ -5,7 +5,7 @@ from os.path import join
 
 
 def main():
-    directory = "/home/moshelaufer/PycharmProjects/autoencoder/VAE/data"
+    directory = "/home/moshelaufer/PycharmProjects/VAE/data"
     file_list = [join(directory, file) for file in listdir(directory) if join(directory, file).endswith('.npy')]
     t0 = np.arange(np.load(file_list[0]).shape[0])
     t1 = np.arange(np.load(file_list[1]).shape[0])

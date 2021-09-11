@@ -57,17 +57,17 @@ class Dataset(Dataset):
         return Zxx, label
 
 
-if __name__ == '__main__':
-    from torch.utils.data import DataLoader
-    dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR/",
-                          "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR.csv")
-    data_loader = DataLoader(dataset, batch_size=1, shuffle=True)
-    c = 0
-    cur_max = 0
-    arr_max = []
-    for i in range(len(data_loader)):
-
-        a=next(iter(data_loader))
-        arr_max.append(a[0].max().item())
-        cur_max = max(cur_max,a[0].max().item())
+# if __name__ == '__main__':
+#     from torch.utils.data import DataLoader
+#     dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR/",
+#                           "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR.csv")
+#     data_loader = DataLoader(dataset, batch_size=1, shuffle=True)
+#     c = 0
+#     cur_max = 0
+#     arr_max = []
+#     for i in range(len(data_loader)):
+#
+#         a=next(iter(data_loader))
+#         arr_max.append(a[0].max().item())
+#         cur_max = max(cur_max,a[0].max().item())
 
