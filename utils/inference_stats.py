@@ -20,7 +20,7 @@ class Results:
         self.VAE = VAE().float().to(self.device)
         self.path2csv = path2csv
         self.path2dataset = path2dataset
-        self.VAE = vae
+        self.vae = vae
 
     def load_weight_model(self):
         self.Encoder.load_state_dict(torch.load(self.path2Encoder)['model_state_dict'])
