@@ -8,6 +8,7 @@ from scipy import signal
 from scipy.io import wavfile
 import pickle
 import pandas as pd
+from utils.util import convert_label4input
 
 
 def load_obj(name):
@@ -20,8 +21,8 @@ class Dataset(Dataset):
         self.train = train
         list_files = next(os.walk(path2data))[2]
         if train:
-            self.path_list = [join(path2data, file) for file in list_files]
-                              # if int(file.replace('.wav', '')) % 7 != 0]
+            self.path_list = [join(path2data, file) for file in list_files \
+                              if int(file.replace('.wav', '')) % 7 != 0]
         else:
             self.path_list = [join(path2data, file) for file in list_files
                               if int(file.replace('.wav', '')) % 7 == 0]
@@ -50,7 +51,8 @@ class Dataset(Dataset):
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
         label = list(self.csv_df.loc[index])[1:]
-        label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0])# , 1.0
+        label = convert_label4input(label)
+        # label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0])# , 1.0
         # if self.train:
         #     label = convert_label2classes(label)
         #     # label = np.asarray(label)/np.asarray([0.75,0.75,0.43,1,0.64,1,1])
@@ -58,7 +60,6 @@ class Dataset(Dataset):
         #     label2 = torch.tensor(label[3:], dtype=torch.float)
         #     label = torch.cat((label1, label2), dim=0)
         return Zxx, label
-
 
 # if __name__ == '__main__':
 #     from torch.utils.data import DataLoader
@@ -73,4 +74,3 @@ class Dataset(Dataset):
 #         a=next(iter(data_loader))
 #         arr_max.append(a[0].max().item())
 #         cur_max = max(cur_max,a[0].max().item())
-

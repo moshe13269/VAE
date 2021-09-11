@@ -9,13 +9,14 @@ import time
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/home/moshelaufer/PycharmProjects/VAE/data/process_state_encoder.txt", "a")
+    file = open("/home/moshelaufer/PycharmProjects/VAE/data2/process_state_encoder.txt", "a")
     device = torch.device('cuda:1')
     model = Encoder().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
     model.train()
 
     mse_criterion = nn.MSELoss().to(device)
+    ce_criterion = nn.CrossEntropyLoss().to(device)
     n_epochs = 30
     loss_arr_mid = []
     loss_arr_out = []
@@ -41,13 +42,16 @@ def main():
             if batch_num % 200 == 0:
                 print("sum samples = {} ".format(batch_num * batch_size))
             spec = data[0].float()
-            label = data[1].float()
+            label = data[1]
             spec = spec.to(device)
             label = label.to(device)
             vector = model(spec)
 
             c1 += 1
-            loss = mse_criterion(vector, label)
+            loss = ce_criterion(vector[:,:4], label[:,:1].squeeze().long()) +\
+                   ce_criterion(vector[:,4:8], label[:,1:2].squeeze().long())+\
+                   ce_criterion(vector[:,8:10], label[:,2:3].squeeze().long())+\
+                   mse_criterion(vector[:,10:], label[:,3:])
             model_optimizer.zero_grad()
             loss.backward()
             model_optimizer.step()
@@ -71,16 +75,16 @@ def main():
 
         file.write("Loss mid= {}, epoch = {} wl".format(loss_mid_tot, epoch))
         print("Loss mid train = {}, epoch = {}, batch_size = {} wl".format(loss_mid_tot, epoch, batch_size))
-        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data/loss_arr_encoder.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data2/loss_arr_encoder.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
 
         if epoch <= 2:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data2/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data2/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
