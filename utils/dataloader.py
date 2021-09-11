@@ -20,7 +20,7 @@ class Dataset(Dataset):
     def __init__(self, path2data, path2csv, train=1):
         self.train = train
         list_files = next(os.walk(path2data))[2]
-        if train:
+        if self.train:
             self.path_list = [join(path2data, file) for file in list_files \
                               if int(file.replace('.wav', '')) % 7 != 0]
         else:
@@ -51,7 +51,8 @@ class Dataset(Dataset):
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
         label = list(self.csv_df.loc[index])[1:]
-        label = convert_label4input(label)
+        if self.train:
+            label = convert_label4input(label)
         # label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0])# , 1.0
         # if self.train:
         #     label = convert_label2classes(label)

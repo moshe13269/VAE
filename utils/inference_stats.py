@@ -5,7 +5,7 @@ from models.model_Encoder import Encoder
 from utils.dataloader import Dataset
 import numpy as np
 import os
-from utils.util import denormalized_vector
+from utils.util import denormalized_vector, convert_label4output
 import matplotlib.pyplot as plt
 
 
@@ -45,7 +45,7 @@ class Results:
 
         with torch.no_grad():
             c = 1
-            d=e=f=0
+            # d=e=f=0
             for batch_num, data in enumerate(data_loader):
                 if batch_num % 100 == 0 and batch_num > 0:
                     print('sample num: {}'.format(batch_num))
@@ -57,36 +57,37 @@ class Results:
                     # print(vector)
                 else:
                     vector = self.Encoder(spec)
-                vector = vector.cpu().numpy() * np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+                vector = vector.cpu().numpy() #* np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
                 vector = vector.squeeze()
-                vector = denormalized_vector(vector)
+                vector = convert_label4output(vector)
                 # print(vector)
-                label = label * np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
-                vector = np.around(vector, decimals=2)
-                label = np.around(label[0].numpy(), decimals=2)
-                if vector[0]!=0.25:
-                    d+=1
-                if vector[1]!=0.25:
-                    e+=1
-                if vector[2]!=0.43:
-                    f+=1
-                print(vector)
-                print(label)
-                print('\n')
+                # label = label * np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+                vector = np.around(vector, decimals=3)
+                # label = np.around(label[0].numpy(), decimals=3)
+                label = np.around(label.numpy(), decimals=3)
+                # if vector[0]!=0.25:
+                #     d+=1
+                # if vector[1]!=0.25:
+                #     e+=1
+                # if vector[2]!=0.43:
+                #     f+=1
+                # print(vector)
+                # print(label)
+                # print('\n')
                 predicted_arr[c] = vector
                 predicted_arr[c+1] = label
                 c += 2
-        print(d,e,f)
+        # print(d,e,f)
         return predicted_arr
 
 
 def main():
-    path2dataset = ["/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly/",
-                    "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly.csv"]
+    path2dataset = ["/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0/",
+                    "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0.csv"]
 
-    path2save = "/home/moshelaufer/PycharmProjects/VAE/data"
-    path2encoder = "/home/moshelaufer/PycharmProjects/VAE/data/model_encoder.pt"
-    path2vae = "/home/moshelaufer/PycharmProjects/VAE/data/modelVAE_KL2.pt"
+    path2save = "/home/moshelaufer/PycharmProjects/VAE/data2"
+    path2encoder = "/home/moshelaufer/PycharmProjects/VAE/data2/model_encoder.pt"
+    path2vae = "/home/moshelaufer/PycharmProjects/VAE/data2/modelVAE_KL2.pt"
 
     inference_model = Results(path2save, path2encoder, path2vae, path2dataset[0], path2dataset[1])
     inference_model.load_weight_model()

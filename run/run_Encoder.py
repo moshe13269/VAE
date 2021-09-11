@@ -26,8 +26,9 @@ def main():
     batch_size = 150
 
     for epoch in range(n_epochs):
-        dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0/",
-                          "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0.csv")
+        dataset = Dataset(
+            "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0/",
+            "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0.csv")
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=1,
                                                   pin_memory=True, drop_last=True)
         print(len(data_loader.dataset))
@@ -48,10 +49,10 @@ def main():
             vector = model(spec)
 
             c1 += 1
-            loss = ce_criterion(vector[:,:4], label[:,:1].squeeze().long()) +\
-                   ce_criterion(vector[:,4:8], label[:,1:2].squeeze().long())+\
-                   ce_criterion(vector[:,8:10], label[:,2:3].squeeze().long())+\
-                   mse_criterion(vector[:,10:], label[:,3:])
+            loss = ce_criterion(vector[:, :4], label[:, :1].squeeze().long()) + \
+                   ce_criterion(vector[:, 4:8], label[:, 1:2].squeeze().long()) + \
+                   ce_criterion(vector[:, 8:10], label[:, 2:3].squeeze().long()) + \
+                   mse_criterion(vector[:, 10:], label[:, 3:])
             model_optimizer.zero_grad()
             loss.backward()
             model_optimizer.step()
@@ -94,6 +95,7 @@ def main():
     torch.no_grad()
     print("Weight file had successfully saved!!\n")
     file.close()
+
 
 if __name__ == "__main__":
     main()
