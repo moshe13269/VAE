@@ -20,8 +20,8 @@ class Dataset(Dataset):
         self.train = train
         list_files = next(os.walk(path2data))[2]
         if train:
-            self.path_list = [join(path2data, file) for file in list_files
-                              if int(file.replace('.wav', '')) % 7 != 0]
+            self.path_list = [join(path2data, file) for file in list_files]
+                              # if int(file.replace('.wav', '')) % 7 != 0]
         else:
             self.path_list = [join(path2data, file) for file in list_files
                               if int(file.replace('.wav', '')) % 7 == 0]

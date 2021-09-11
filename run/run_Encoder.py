@@ -16,7 +16,7 @@ def main():
     model.train()
 
     mse_criterion = nn.MSELoss().to(device)
-    n_epochs = 100
+    n_epochs = 30
     loss_arr_mid = []
     loss_arr_out = []
 
@@ -25,8 +25,8 @@ def main():
     batch_size = 150
 
     for epoch in range(n_epochs):
-        dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly/",
-                          "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly.csv")
+        dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0/",
+                          "/home/moshelaufer/Documents/TalNoise/TAL31.07.2021/20210727_data_150k_constADSR_CATonly_res0.csv")
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=1,
                                                   pin_memory=True, drop_last=True)
         print(len(data_loader.dataset))

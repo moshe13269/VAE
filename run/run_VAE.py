@@ -17,7 +17,7 @@ def main():
 
     mse_criterion = nn.MSELoss().to(device)
     # criterion_out = nn.KLDivLoss(reduction='batchmean').to(device)
-    n_epochs = 100
+    n_epochs = 30
     loss_arr_mid = []
     loss_arr_out = []
 

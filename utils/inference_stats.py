@@ -39,24 +39,44 @@ class Results:
         print('csv file had been saved')
 
     def predict_param(self):
-        dataset = Dataset(self.path2dataset, self.path2csv, train=0)
+        dataset = Dataset(self.path2dataset, self.path2csv, train=1)
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
         predicted_arr = np.empty([len(data_loader.dataset), 7], dtype=float)
 
         with torch.no_grad():
+            c = 1
+            d=e=f=0
             for batch_num, data in enumerate(data_loader):
-                if batch_num % 1000 == 0 and batch_num > 0:
+                if batch_num % 100 == 0 and batch_num > 0:
                     print('sample num: {}'.format(batch_num))
                     break
                 spec = data[0].float().to(self.device)
+                label = data[1].float()
                 if VAE:
                     _, vector = self.VAE(spec)
-                    print(vector)
+                    # print(vector)
                 else:
                     vector = self.Encoder(spec)
-                vector = vector / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+                vector = vector.cpu().numpy() * np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+                vector = vector.squeeze()
                 vector = denormalized_vector(vector)
-                predicted_arr[batch_num] = vector
+                # print(vector)
+                label = label * np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+                vector = np.around(vector, decimals=2)
+                label = np.around(label[0].numpy(), decimals=2)
+                if vector[0]!=0.25:
+                    d+=1
+                if vector[1]!=0.25:
+                    e+=1
+                if vector[2]!=0.43:
+                    f+=1
+                print(vector)
+                print(label)
+                print('\n')
+                predicted_arr[c] = vector
+                predicted_arr[c+1] = label
+                c += 2
+        print(d,e,f)
         return predicted_arr
 
 
