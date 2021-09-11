@@ -25,6 +25,7 @@ class Dataset(Dataset):
         else:
             self.path_list = [join(path2data, file) for file in list_files
                               if int(file.replace('.wav', '')) % 7 == 0]
+
         self.csv_df = pd.read_csv(path2csv, skipinitialspace=True)
 
     def __len__(self):
