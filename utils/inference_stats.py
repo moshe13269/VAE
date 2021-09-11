@@ -23,8 +23,10 @@ class Results:
         self.VAE = vae
 
     def load_weight_model(self):
-        self.Encoder.load_state_dict(torch.load(self.path2Encoder)['model_state_dict']).eval()
-        self.VAE.load_state_dict(torch.load(self.path2VAE)['model_state_dict']).eval()
+        self.Encoder.load_state_dict(torch.load(self.path2Encoder)['model_state_dict'])
+        self.Encoder.eval()
+        self.VAE.load_state_dict(torch.load(self.path2VAE)['model_state_dict'])
+        self.VAE.eval()
 
     def save_results2csv(self, np_array):
         columns = ['24.osc2waveform', '26.lfo1waveform', '32.lfo1destination',
