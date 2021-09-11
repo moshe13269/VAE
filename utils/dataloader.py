@@ -18,11 +18,12 @@ def load_obj(name):
 class Dataset(Dataset):
     def __init__(self, path2data, path2csv, train=1):
         self.train = train
+        list_files = next(os.walk(path2data))[2]
         if train:
-            self.path_list = [join(path2data, file) for file in os.walk(path2data)
+            self.path_list = [join(path2data, file) for file in list_files
                               if int(file.replace('.wav', '')) % 7 != 0]
         else:
-            self.path_list = [join(path2data, file) for file in os.walk(path2data)
+            self.path_list = [join(path2data, file) for file in list_files
                               if int(file.replace('.wav', '')) % 7 == 0]
         self.csv_df = pd.read_csv(path2csv, skipinitialspace=True)
 
