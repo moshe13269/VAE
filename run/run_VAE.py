@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from autoencoder.VAE.models.model_VAE import VAE
-from autoencoder.VAE.utils.dataloader import Dataset
+from VAE.models.model_VAE import VAE
+from VAE.utils.dataloader import Dataset
 import time
 
 
