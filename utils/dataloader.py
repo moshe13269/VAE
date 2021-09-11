@@ -18,10 +18,10 @@ class Dataset(Dataset):
     def __init__(self, path2data, path2csv, train=1):
         self.train = train
         if train:
-            self.path_list = [join(path2data, file) for file in listdir(path2data)
+            self.path_list = [os.path.join(path2data, file) for file in os.listdir(path2data)
                               if int(file.replace('.wav', '')) % 7 != 0]
         else:
-            self.path_list = [join(path2data, file) for file in listdir(path2data)
+            self.path_list = [os.path.join(path2data, file) for file in os.listdir(path2data)
                               if int(file.replace('.wav', '')) % 7 == 0]
         self.csv_df = pd.read_csv(path2csv, skipinitialspace=True)
 
