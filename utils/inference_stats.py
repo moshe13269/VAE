@@ -39,7 +39,7 @@ class Results:
         print('csv file had been saved')
 
     def predict_param(self):
-        dataset = Dataset(self.path2dataset[0], self.path2dataset[1], train=0)
+        dataset = Dataset(self.path2dataset, self.path2dataset, train=0)
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
         predicted_arr = np.empty([len(data_loader.dataset), 7], dtype=float)
 
