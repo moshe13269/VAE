@@ -50,7 +50,7 @@ class Dataset(Dataset):
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
         label = list(self.csv_df.loc[index])[1:]
-        label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0, 1.0])
+        label = np.asarray(label) / np.asarray([0.75, 0.75, 0.43, 1.0, 0.64, 1.0])# , 1.0
         # if self.train:
         #     label = convert_label2classes(label)
         #     # label = np.asarray(label)/np.asarray([0.75,0.75,0.43,1,0.64,1,1])
