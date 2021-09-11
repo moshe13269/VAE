@@ -42,10 +42,10 @@ class VAE(nn.Module):
 
         self.conv14 = nn.Conv2d(256, 512, 3, padding=1, stride=2)
         self.conv15 = nn.Conv2d(512, 512, 4)
-        self.fc1 = nn.Linear(512, 6)
+        self.fc1 = nn.Linear(512, 13)
 
         # decoder
-        self.fc2 = nn.Linear(6, 512)
+        self.fc2 = nn.Linear(13, 512)
         self.conv20 = nn.ConvTranspose2d(512, 512, 4)
         self.conv21 = nn.ConvTranspose2d(512, 256, 3, padding=1)
 
