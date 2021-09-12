@@ -9,6 +9,7 @@ from scipy.io import wavfile
 import pickle
 import pandas as pd
 from utils.util import convert_label4input
+import matplotlib.pyplot as plt
 
 
 def load_obj(name):
@@ -40,13 +41,14 @@ class Dataset(Dataset):
             print(self.path_list[index])
         f, t, Zxx = signal.stft(x, fs, nperseg=128, nfft=511, window='hamming')
         # f, t, Zxx = signal.stft(x, fs, nperseg=64, nfft=1023, window='hamming')
-        Zxx = np.log(np.abs(Zxx) + 10 ** -10)
+        # Zxx = np.log(np.abs(Zxx) + 10 ** -10)
+        Zxx = np.abs(Zxx)
         Zxx = torch.tensor(Zxx[:, :256])
         # Zxx = ((Zxx - Zxx.mean()) / Zxx.std())
-        # z_min = Zxx.min()
-        # z_max = Zxx.max()
-        # diff = z_max - z_min
-        # Zxx = (Zxx - z_min) / diff
+        z_min = Zxx.min()
+        z_max = Zxx.max()
+        diff = z_max - z_min
+        Zxx = (Zxx - z_min) / diff
         Zxx = Zxx.unsqueeze(0)
         if np.sum(np.where(np.isnan(Zxx) == True, 1, 0)) > 0:
             print('index = {} is nan'.format(index))
@@ -64,8 +66,8 @@ class Dataset(Dataset):
 
 # if __name__ == '__main__':
 #     from torch.utils.data import DataLoader
-#     dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR/",
-#                           "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR.csv")
+#     dataset = Dataset("/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/sounds_constADSR_res0/",
+#                           "/home/moshelaufer/Documents/TalNoise/TAL14.07.2021/20210713_data_150k_constADSR_res0.csv")
 #     data_loader = DataLoader(dataset, batch_size=1, shuffle=True)
 #     c = 0
 #     cur_max = 0

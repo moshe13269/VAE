@@ -29,12 +29,18 @@ def convert_label4input(label):
 
 
 def convert_label4output(label):
-    new_label = np.zeros(6)
-    new_label[0] = F.softmax(label[:4]).argmax()
-    new_label[1] = F.softmax(label[4:8]).argmax()
-    new_label[2] = F.softmax(label[8:9]).argmax()
-    new_label[3] = new_label[10]
-    new_label[4] = new_label[11]
-    new_label[5] = new_label[12]
+    label = torch.from_numpy(label)
+    new_label = torch.zeros(6)
+    # print(label[:4], label[4:8])
+    new_label[0] = F.softmax(label[:4], dim=0).argmax().item()/4
+    new_label[1] = F.softmax(label[4:8], dim=0).argmax().item()/4
+    value = F.softmax(label[8:10], dim=0).argmax().item()
+    if value == 0:
+        new_label[2] = 0
+    else:
+        new_label[2] = 0.43
+    new_label[3] = label[10]
+    new_label[4] = label[11]
+    new_label[5] = label[12]
     return new_label
 

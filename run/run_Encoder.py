@@ -9,7 +9,7 @@ import time
 
 def main():
     torch.cuda.empty_cache()
-    file = open("/home/moshelaufer/PycharmProjects/VAE/data2/process_state_encoder.txt", "a")
+    file = open("/home/moshelaufer/PycharmProjects/VAE/data_normalized/process_state_encoder.txt", "a")
     device = torch.device('cuda:1')
     model = Encoder().to(device)
     model_optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
@@ -76,16 +76,16 @@ def main():
 
         file.write("Loss mid= {}, epoch = {} wl".format(loss_mid_tot, epoch))
         print("Loss mid train = {}, epoch = {}, batch_size = {} wl".format(loss_mid_tot, epoch, batch_size))
-        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data2/loss_arr_encoder.npy"
+        outfile_epoch = "/home/moshelaufer/PycharmProjects/VAE/data_normalized/loss_arr_encoder.npy"
         np.save(outfile_epoch, np.asarray(loss_arr_mid))
 
         if epoch <= 2:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data2/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data_normalized/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
         elif min(loss_arr_mid[:len(loss_arr_out) - 2]) >= loss_arr_mid[len(loss_arr_out) - 1]:
-            path = "/home/moshelaufer/PycharmProjects/VAE/data2/model_encoder.pt"
+            path = "/home/moshelaufer/PycharmProjects/VAE/data_normalized/model_encoder.pt"
             torch.save({'epoch': epoch, 'model_state_dict': model.state_dict(),
                         'optimizer_state_dict': model_optimizer.state_dict()}, path)
             print("Model had been saved")
